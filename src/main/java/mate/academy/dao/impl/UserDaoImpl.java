@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -39,7 +39,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("From User u WHERE u.email = :email",
                             User.class)
